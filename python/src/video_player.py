@@ -28,10 +28,7 @@ class VideoPlayer:
         list_of_videos.sort(key=lambda a: a.title)
         print("Here's a list of all available videos:")
         for i in range(len(list_of_videos)):
-            video = list_of_videos[i]
-            tags = " ".join([tag for tag in video.tags])
-            video_string = f" {video.title} ({video.video_id}) [{tags}]"
-            print(video_string)
+            print(list_of_videos[i])
 
     def play_video(self, video_id):
         """Plays the respective video.
@@ -94,7 +91,13 @@ class VideoPlayer:
     def show_playing(self):
         """Displays video currently playing."""
 
-        print("show_playing needs implementation")
+        if(self.currently_playing == None):
+            print("No video is currently playing")
+            return
+        if(self.is_paused):
+            print(f"Currently playing:{self.currently_playing} - PAUSED")
+        else:
+            print(f"Currently playing:{self.currently_playing}")
 
     def create_playlist(self, playlist_name):
         """Creates a playlist with a given name.
