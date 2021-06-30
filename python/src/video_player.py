@@ -10,6 +10,10 @@ class VideoPlayer:
         self._video_library = VideoLibrary()
         self.currently_playing = None
         self.is_paused = False
+        self.playing_video = "Playing video: {}"
+        self.stopping_video = "Stopping video: {}"
+        self.cannot_play = "Cannot play video: Video does not exist"
+        self.cannot_stop = "Cannot stop video: No video is currently playing"
 
     def number_of_videos(self):
         num_videos = len(self._video_library.get_all_videos())
@@ -33,19 +37,24 @@ class VideoPlayer:
         Args:
             video_id: The video_id to be played.
         """
+
         video = self._video_library.get_video(video_id)
         if(video == None):
-            print("Cannot play video: Video does not exist")
+            print(self.cannot_play)
             return
         if(self.currently_playing != None):
-            print(f"Stopping video: {self.currently_playing.title}")
+            print(self.stopping_video.format(self.currently_playing.title))
         self.currently_playing = video
-        print(f"Playing video: {self.currently_playing.title}")
+        print(self.playing_video.format(self.currently_playing.title))
 
     def stop_video(self):
         """Stops the current video."""
 
-        print("stop_video needs implementation")
+        if(self.currently_playing == None):
+            print(self.cannot_stop)
+            return
+        print(self.stopping_video.format(self.currently_playing.title))
+        self.currently_playing = None
 
     def play_random_video(self):
         """Plays a random video from the video library."""
