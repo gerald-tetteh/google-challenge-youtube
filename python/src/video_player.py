@@ -18,7 +18,7 @@ class VideoPlayer:
         self.cannot_play = "Cannot play video: Video does not exist"
         self.cannot_stop = "Cannot stop video: No video is currently playing"
         self.playlists = []
-        self.playlist_names = defaultdict(lambda: False)
+        self.playlist_names = defaultdict(lambda: None)
 
     def number_of_videos(self):
         num_videos = len(self._video_library.get_all_videos())
@@ -108,11 +108,10 @@ class VideoPlayer:
         Args:
             playlist_name: The playlist name.
         """
-
-        if(self.playlist_names[playlist_name.lower()]):
+        if(self.playlist_names[playlist_name.lower()] != None):
             print("Cannot create playlist: A playlist with the same name already exists")
         else:
-            self.playlist_names[playlist_name.lower()] = True
+            self.playlist_names[playlist_name.lower()] = len(self.playlists)
             playlist = Playlist(playlist_name)
             self.playlists.append(playlist)
             print(f"Successfully created new playlist: {playlist.name}")
@@ -124,7 +123,20 @@ class VideoPlayer:
             playlist_name: The playlist name.
             video_id: The video_id to be added.
         """
-        print("add_to_playlist needs implementation")
+        if(self.playlist_names[playlist_name.lower()] == None):
+            print(f"Cannot add video to {playlist_name}: Playlist does not exist")
+            return
+        video = self._video_library.get_video(video_id)
+        if(video == None):
+            print(f"Cannot add video to {playlist_name}: Video does not exist")
+            return
+        playlist = self.playlists[self.playlist_names[playlist_name.lower()]]
+        result = playlist.add_video(video_id)
+        if(result == 0):
+            print(f"Cannot add video to {playlist_name}: Video already added")
+        else:
+            self.playlists[self.playlist_names[playlist_name.lower()]] = playlist
+            print(f"Added video to {playlist_name}: {video.title}")
 
     def show_all_playlists(self):
         """Display all playlists."""
