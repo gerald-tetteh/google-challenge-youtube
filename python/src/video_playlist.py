@@ -13,7 +13,13 @@ class Playlist:
     
     @property
     def name(self) -> str:
+        """Returns playlist name"""
         return self._name
+
+    @property
+    def videos(self) -> list:
+        """Returns videos array"""
+        return self._videos
     
     def add_video(self,video_id) -> int:
         """Adds video id to videos array
@@ -26,10 +32,6 @@ class Playlist:
         self._videos.append(video_id)
         return 1;
     
-    def get_all_videos(self) -> list:
-        """Returns videos array"""
-        return self._videos
-
     def remove_video(self,video_id) -> int:
         """Remove video from playlist
 
