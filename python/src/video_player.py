@@ -135,7 +135,6 @@ class VideoPlayer:
         if(result == 0):
             print(f"Cannot add video to {playlist_name}: Video already added")
         else:
-            self.playlists[self.playlist_names[playlist_name.lower()]] = playlist
             print(f"Added video to {playlist_name}: {video.title}")
 
     def show_all_playlists(self):
@@ -198,7 +197,14 @@ class VideoPlayer:
         Args:
             playlist_name: The playlist name.
         """
-        print("clears_playlist needs implementation")
+
+        if(self.playlist_names[playlist_name.lower()] == None):
+            print(f"Cannot clear playlist {playlist_name}: Playlist does not exist")
+            return
+        playlist = self.playlists[
+            self.playlist_names[playlist_name.lower()]]
+        playlist.clear_playlist()
+        print(f"Successfully removed all videos from {playlist_name}")
 
     def delete_playlist(self, playlist_name):
         """Deletes a playlist with a given name.
@@ -206,7 +212,15 @@ class VideoPlayer:
         Args:
             playlist_name: The playlist name.
         """
-        print("deletes_playlist needs implementation")
+        
+        if(self.playlist_names[playlist_name.lower()] == None):
+            print(f"Cannot delete playlist {playlist_name}: Playlist does not exist")
+            return
+        playlist = self.playlists[
+            self.playlist_names[playlist_name.lower()]]
+        self.playlists.remove(playlist)
+        del self.playlist_names[playlist_name.lower()]
+        print(f"Deleted playlist: {playlist_name}")
 
     def search_videos(self, search_term):
         """Display all the videos whose titles contain the search_term.
