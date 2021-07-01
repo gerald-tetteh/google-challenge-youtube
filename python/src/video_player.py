@@ -221,6 +221,42 @@ class VideoPlayer:
         self.playlists.remove(playlist)
         del self.playlist_names[playlist_name.lower()]
         print(f"Deleted playlist: {playlist_name}")
+    
+    def _filter_videos(self,filter_function,search_term):
+        """Filter out videos that match the search term
+
+        Args:
+            filter_function: The function used to select applicable videos
+            search_term: String used to filter videos
+        """
+        all_videos = self._video_library.get_all_videos()
+        search_results = list(filter(filter_function,all_videos))
+        search_results.sort(key=lambda video: video.title.lower())
+        return search_results
+    
+    def _display_results_and_options(self, search_results, search_term):
+        """Display search results and option for user to play a selected
+        video
+
+        Args:
+            search_results: A list containing filtered videos
+            search_term: String used to filter videos
+        """
+        if(len(search_results) == 0):
+            print(f"No search results for {search_term}")
+        else:
+            print(f"Here are the results for {search_term}:")
+            for i in range(len(search_results)):
+                print(f" {i+1}){search_results[i]}")
+            print("Would you like to play any of the above? If yes, specify the number of the video.")
+            print("If your answer is not a valid number, we will assume it's a no.")
+            try:
+                video_number = int(input()) - 1
+            except Exception:
+                return
+            if(video_number > len(search_results) or video_number < 0):
+                return
+            self.play_video(search_results[video_number].video_id)
 
     def search_videos(self, search_term):
         """Display all the videos whose titles contain the search_term.
@@ -228,7 +264,9 @@ class VideoPlayer:
         Args:
             search_term: The query to be used in search.
         """
-        print("search_videos needs implementation")
+        filter_function = lambda video: search_term.lower() in video.title.lower()
+        search_results = self._filter_videos(filter_function,search_term)
+        self._display_results_and_options(search_results,search_term)
 
     def search_videos_tag(self, video_tag):
         """Display all videos whose tags contains the provided tag.
@@ -236,7 +274,9 @@ class VideoPlayer:
         Args:
             video_tag: The video tag to be used in search.
         """
-        print("search_videos_tag needs implementation")
+        filter_function = lambda video: video_tag.lower() in video.tags
+        search_results = self._filter_videos(filter_function,video_tag)
+        self._display_results_and_options(search_results,video_tag)
 
     def flag_video(self, video_id, flag_reason=""):
         """Mark a video as flagged.
