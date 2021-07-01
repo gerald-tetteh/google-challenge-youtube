@@ -28,11 +28,11 @@ class VideoLibrary:
                     [tag.strip() for tag in tags.split(",")] if tags else [],
                 )
 
-    def get_all_videos(self):
+    def get_all_videos(self) -> list:
         """Returns all available video information from the video library."""
         return list(self._videos.values())
 
-    def get_video(self, video_id):
+    def get_video(self, video_id) -> Video:
         """Returns the video object (title, url, tags) from the video library.
 
         Args:
