@@ -18,6 +18,7 @@ class Video:
         self._tags = tuple(video_tags)
 
     def __repr__(self) -> str:
+        """Default print format of video"""
         tags = " ".join([tag for tag in self._tags])
         return f" {self._title} ({self._video_id}) [{tags}]"
 
@@ -47,7 +48,9 @@ class Video:
         return self._tags
   
     def set_flagged(self,value) -> None:
+        """Set flagged status of video"""
         self._is_flagged = value
     
     def set_flagged_reason(self,value) -> None:
+        """Set reason for flagging video"""
         self._flagged_reason = value

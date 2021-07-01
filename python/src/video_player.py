@@ -18,6 +18,7 @@ class VideoPlayer:
         self.cannot_play = "Cannot play video: Video does not exist"
         self.cannot_stop = "Cannot stop video: No video is currently playing"
         self.playlists = []
+        # store names of playlists in lower case
         self.playlist_names = defaultdict(lambda: None)
     
     def _filter_flagged_videos(self) -> list:

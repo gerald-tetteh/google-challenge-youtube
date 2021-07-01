@@ -44,4 +44,5 @@ class Playlist:
         return 1;
 
     def clear_playlist(self) -> None:
+        """Remove all videos from playlist"""
         self._videos = []
